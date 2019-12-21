@@ -1,0 +1,50 @@
+{{define "admin_sidebar"}}
+    <div class="w-full lg:w-1/4 lg:pr-4">
+        <div class="bg-white lg:px-8 px-6 py-4 shadow-xl z-10 relative mb-8 rounded lg:block hidden">
+            {{ if .NewItemButton }}
+                <a href="/admin{{ .NewItemLink }}" class="block text-center w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 rounded">
+                    {{ .NewItemText }}
+                </a>
+            {{ end }}
+            <a href="/admin" class="font-semibold text-gray-900 block my-4 hover:underline">
+                Admin Home
+            </a>
+            <a href="/admin/categories" class="font-semibold text-gray-900 block my-4 hover:underline">
+                Categories
+            </a>
+            <a href="/admin/courses" class="font-semibold text-gray-900 block my-4 hover:underline">
+                Courses
+            </a>
+            <a href="/admin/blog" class="font-semibold text-gray-900 block my-4 hover:underline">
+                Blog
+            </a>
+            <a href="/admin/podcast" class="font-semibold text-gray-900 block my-4 hover:underline">
+                Podcast
+            </a>
+            <a href="/admin/settings" class="font-semibold text-gray-900 block my-4 hover:underline">
+                Settings
+            </a>
+            <a href="/admin/tickets" class="font-semibold text-gray-900 block my-4 hover:underline">
+                Customer support tickets
+            </a>
+            <a href="/admin/users" class="font-semibold text-gray-900 block my-4 hover:underline">
+                Users
+            </a>
+            <a href="/admin/groups" class="font-semibold text-gray-900 block my-4 hover:underline">
+                Groups
+            </a>
+            <a href="/admin/footer" class="font-semibold text-gray-900 block my-4 hover:underline">
+                Footer
+            </a>
+            <a href="/admin/toolbar" class="font-semibold text-gray-900 block my-4 hover:underline">
+                Toolbar
+            </a>
+            <a href="/admin/pages" class="font-semibold text-gray-900 block my-4 hover:underline">
+                Pages
+            </a>
+            <a href="/admin/files" class="font-semibold text-gray-900 block my-4 hover:underline">
+                Static files
+            </a>
+        </div>
+    </div>
+{{end}}

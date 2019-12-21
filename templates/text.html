@@ -1,0 +1,39 @@
+{{ template "header.html" . }}
+
+<link rel="stylesheet" href="https://uicdn.toast.com/tui-editor/latest/tui-editor.css"></link>
+
+<link rel="stylesheet" href="https://uicdn.toast.com/tui-editor/latest/tui-editor-contents.css"></link>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css"></link>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css"></link>
+<!-- Scripts -->
+
+<div class="container mx-auto lg:px-8 px-4" style="margin-top: -7rem;">
+    <div class="flex md:flex-row flex-wrap">
+
+        {{ template "session_sidebar" .}}
+
+        <div class="w-full lg:w-3/4 lg:pl-4">
+            <div class="mb-3 z-10 relative rounded max-w-sm max-w-sm w-full lg:max-w-full lg:flex">
+                <div class="w-full p-8 shadow bg-white rounded flex flex-col justify-between leading-normal">
+                    <div class="mb-8" id="viewerSection">
+                    <noscript>{{ .Text | Markdown }}</noscript>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://uicdn.toast.com/tui-editor/latest/tui-editor-Editor-full.min.js"></script>
+
+<script>
+    var editor = new tui.Editor.factory({
+    el: document.querySelector('#viewerSection'),
+    viewer: true,
+    height: '500px',
+    initialValue: '{{ .Text }}'
+});
+</script>
+{{ template "footer.html" . }}

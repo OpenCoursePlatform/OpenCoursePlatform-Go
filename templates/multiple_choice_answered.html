@@ -1,0 +1,68 @@
+{{ template "header.html" . }}
+
+<div class="container mx-auto lg:px-8 px-4" style="margin-top: -7rem;">
+    <div class="flex md:flex-row flex-wrap">
+
+        {{ template "session_sidebar" .}}
+
+        <form class="w-full lg:w-3/4 lg:pl-4" method="POST" enctype="application/x-www-form-urlencoded">
+            {{ range .Questions }}
+                <div class="mb-3 z-10 relative rounded max-w-sm max-w-sm w-full max-w-full flex">
+                    <div class="w-full p-8 shadow bg-white rounded flex flex-col justify-between leading-normal">
+                        <div class="mb-2">
+                            {{ .Text }}
+                        </div>
+                        {{ $Correct := 0 }}
+                        {{ range .Options }}
+                            {{ if .IsCorrect }}
+                                {{ if gt $Correct 0 }}
+                                    {{ $Correct = 2 }}
+                                {{ else }}
+                                    {{ $Correct = 1 }}
+                                {{ end }}
+                            {{ end }}
+                        {{ end }}
+                        {{ $Text := .Text }}
+                        {{ range .Options }}
+                            <div class="mb-2">
+                                <div class="md:w-1/3"></div>
+                                <div class="md:w-2/3 block">
+                                    {{ if gt $Correct 1 }}
+                                        {{ if .Checked }}
+                                            <input class="mr-2 leading-tight" type="checkbox" name="{{ $Text }}" value="{{ .Text }}" id="{{ .Text }}" checked="checked">
+                                        {{ else }}
+                                            <input class="mr-2 leading-tight" type="checkbox" name="{{ $Text }}" value="{{ .Text }}" id="{{ .Text }}">
+                                        {{ end }}
+                                    {{ else }}
+                                        {{ if .Checked }}
+                                            <input class="mr-2 leading-tight" type="radio" name="{{ $Text }}" value="{{ .Text }}" id="{{ .Text }}" checked="checked">
+                                        {{ else }}
+                                            <input class="mr-2 leading-tight" type="radio" name="{{ $Text }}" value="{{ .Text }}" id="{{ .Text }}">
+                                        {{ end }}
+                                    {{ end }}
+                                    {{ if eq .Checked .IsCorrect }}
+                                        <label class="text-green-500 font-bold" for="{{ .Text }}">
+                                            <span class="text-sm">
+                                                {{ .Text }} <span class="text-gray-700 font-thin">- Correct</span>
+                                            </span>
+                                        </label>
+                                    {{ else }}
+                                        <label class="text-red-500 font-bold" for="{{ .Text }}">
+                                            <span class="text-sm">
+                                                {{ .Text }} <span class="text-gray-700 font-thin">- Incorrect</span>
+                                            </span>
+                                        </label>
+                                    {{ end }}
+                                </div>
+                            </div>
+                        {{ end }}
+                    </div>
+                </div>
+            {{ end }}
+            <button class="w-full shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="submit">
+                Answer questions
+            </button>
+        </form>
+    </div>
+</div>
+{{ template "footer.html" . }}

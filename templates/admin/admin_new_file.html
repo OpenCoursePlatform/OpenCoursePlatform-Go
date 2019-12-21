@@ -1,0 +1,37 @@
+{{ template "header.html" . }}
+
+<div class="container mx-auto lg:px-8 px-4" style="margin-top: -7rem;">
+    <div class="flex md:flex-row flex-wrap">
+        {{ template "admin_sidebar" .}}
+        <div class="w-full lg:w-3/4 lg:pl-4">
+            <div class="flex flex-col items-center flex-1 w-full justify-center px-4 sm:px-0">
+                <div class="z-10 flex rounded-lg shadow-lg w-full bg-white sm:mx-0 p-10">
+                    <div class="flex flex-col w-full">
+                        <div class="flex flex-col flex-1 justify-center mb-8">
+                            <h1 class="text-4xl text-center font-thin">Add new file</h1>
+                            <div class="w-full mt-4">
+                                <form class="form-horizontal w-full mx-auto" enctype="multipart/form-data" method="POST">
+                                    <div class="flex flex-col mt-4">
+                                        <label class="flex flex-col items-center py-2 bg-white text-indigo-700 rounded-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-indigo-700 hover:text-white">
+                                            <svg class="w-6 h-6" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                                <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z"/>
+                                            </svg>
+                                            <span class="text-sm leading-normal">Select file</span>
+                                            <input type='file' name="file" class="hidden"/>
+                                        </label>
+                                    </div>
+                                    <div class="flex flex-col mt-8">
+                                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white text-sm font-semibold py-2 px-4 rounded">
+                                            Add new file
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ template "footer.html" . }}

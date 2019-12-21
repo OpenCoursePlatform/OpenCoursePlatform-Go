@@ -1,0 +1,37 @@
+{{ $Slug := .Post.Slug }}
+
+{{ template "header.html" . }}
+<div class="container mx-auto lg:px-8 px-4" style="margin-top: -7rem;">
+    <div class="flex md:flex-row flex-wrap">
+        <div class="w-full lg:w-1/4 lg:pr-4">
+            <div class="bg-white lg:px-8 px-6 py-4 shadow-xl z-10 relative mb-8 rounded lg:block hidden">
+                <h5 class="mb-3 lg:mb-2 text-gray-500 uppercase tracking-wide font-bold text-sm lg:text-xs">Blog posts</h5>
+                {{ range .Posts }}
+                    {{ if eq $Slug .Slug }}
+                        <p class="font-semibold text-indigo-700 block my-4">
+                            {{ .Title }}
+                        </p>
+                    {{ else }}
+                        <a href="/podcast/{{ .Slug }}" class="font-semibold text-gray-900 block my-4 hover:underline">
+                            {{ .Title }}
+                        </a>
+                    {{ end }}
+                {{ end }}
+            </div>
+        </div>
+
+        <div class="w-full lg:w-3/4 lg:pl-4">
+
+            <div class="bg-white p-8 shadow-xl z-10 relative mb-8 rounded">
+                <h1 class="text-xl mb-3 font-bold text-indigo-700">{{ .Post.Title }}</h1>
+                {{ .Post.Text | Markdown }}
+                <audio class="mt-4" controls>
+                    <source src="/static/podcasts/{{ .Post.File }}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+
+        </div>
+    </div>
+</div>
+{{ template "footer.html" . }}

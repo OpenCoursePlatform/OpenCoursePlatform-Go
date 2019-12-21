@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <link href="https://fonts.googleapis.com/css?family=Muli&display=swap" rel="stylesheet">
+        <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+        <style>
+            html {
+                font-family: 'Muli', sans-serif;
+            }
+            .dropdown:hover .dropdown-menu {
+                display: block;
+            }
+        </style>
+        <title>New website</title>
+    </head>
+
+    <body class="leading-relaxed text-gray-900 bg-gray-100" style="font-family: 'Muli', sans-serif;">
+        <div class="bg-indigo-700 h-40 absolute top-0 left-0 right-0" style="transform: skewY(-5deg) translateY(-100%); background: linear-gradient(90deg, #4c51bf, #313587);"></div>
+        <div class="bg-indigo-700 h-40 absolute top-0 left-0 right-0" style="transform: skewY(-5deg) translateY(-50%); background: linear-gradient(90deg, #4c51bf, #313587);"></div>
+        <nav class="w-full z-10 absolute top-0 left-0 flex items-center justify-between flex-wrap p-6">
+            <div class="flex items-center flex-shrink-0 text-white mr-6">
+                <svg class="fill-current h-8 w-8 mr-2" width="54" height="54" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 22.1c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05zM0 38.3c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05z"/></svg>
+                <span class="font-semibold text-xl tracking-tight">Open Course Platform</span>
+            </div>
+            <div class="block lg:hidden">
+                <button class="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
+                    <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
+                </button>
+            </div>
+        </nav>
+        <div class="bg-indigo-700 text-white pt-6 lg:pt-16 pb-40 shadow-xl" style="transform: skewY(-5deg);  background: linear-gradient(90deg, #4c51bf, #313587); margin-top: 4rem;">
+            <div class="container mx-auto px-4 lg:px-8" style="transform: skewY(5deg);">
+                <div class="flex flex-row justify-between">
+                    <p class="text-lg font-bold">
+                       Open Course Platform
+                    </p>
+                    <button id="menu-button" class="lg:hidden" role="button" aria-label="Menu">
+                        <svg height="32px" id="Layer_1" style="enable-background:new 0 0 32 32; color: white;" version="1.1" viewBox="0 0 32 32" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <path fill="#ffffff" d="m4,8.491662l24,0c1.104,0 2,-1.121245 2,-2.502779s-0.896,-2.502779 -2,-2.502779l-24,0c-1.104,0 -2,1.121245 -2,2.502779s0.896,2.502779 2,2.502779zm24,5.005559l-24,0c-1.104,0 -2,1.121245 -2,2.502779s0.896,2.502779 2,2.502779l24,0c1.104,0 2,-1.121245 2,-2.502779s-0.896,-2.502779 -2,-2.502779zm0,10.011118l-24,0c-1.104,0 -2,1.121245 -2,2.502779s0.896,2.502779 2,2.502779l24,0c1.104,0 2,-1.121245 2,-2.502779s-0.896,-2.502779 -2,-2.502779z"></path>
+                        </svg>
+                    </button>
+                </div>
+                <h1 class="text-5xl font-bold leading-tight mt-8">New website</h1>
+            </div>
+        </div>
+
+        <main>
+            <div class="container mx-auto lg:px-8 px-4 mb-10" style="margin-top: -7rem;">
+                <div class="flex md:flex-row flex-wrap">
+                    <div class="w-full">
+                        <div class="flex flex-col items-center flex-1 w-full justify-center px-4 sm:px-0">
+                            <div class="z-10 flex rounded-lg shadow-lg w-full bg-white sm:mx-0 p-10">
+                                <div class="flex flex-col w-full">
+                                    <div class="flex flex-col flex-1 justify-center mb-8">
+                                        <h2 class="text-4xl font-bold text-indigo-700">Welcome to your new Open Course Platform website</h2>
+                                        <h3 class="text-l">We need to know a few things about your website before we get started</h3>
+                                        <h3 class="text-l">Pick your favorite database below</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container mx-auto lg:px-8 px-4">
+                <div class="flex md:flex-row flex-wrap">
+                    <div class="w-full">
+                        <div class="flex flex-col items-center flex-1 w-full justify-center px-4 sm:px-0">
+                            <div class="z-10 flex rounded-lg shadow-lg w-full bg-white sm:mx-0 p-10">
+                                <div class="flex flex-col w-full">
+                                    <div class="flex flex-col flex-1 justify-center mb-8">
+                                        <ul id="tabs" class="flex border-b">
+                                            <li class="-mb-px mr-1">
+                                                <a href="#mysql" class="bg-white inline-block border-l border-t border-r rounded-t py-2 px-4 text-blue-700 font-semibold">MySQL</a>
+                                            </li>
+                                        </ul>
+                                        <div id="mysql">
+                                            <div class="w-full mt-4">
+                                                <form class="form-horizontal w-full mx-auto" method="POST" action="/sign/in">
+                                                    <input name="database" type="hidden" value="mysql">
+                                                    <div class="flex flex-col mt-4">
+                                                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="database_user">
+                                                            Database user *
+                                                        </label>
+                                                        <input required name="database_user" id="database_user" type="text" class="flex-grow h-8 px-2 border rounded border-grey-400" placeholder="Database user">
+                                                    </div>
+                                                    <div class="flex flex-col mt-4">
+                                                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="database_password">
+                                                            Database password *
+                                                        </label>
+                                                        <input required name="database_password" id="database_password" type="password" class="flex-grow h-8 px-2 border rounded border-grey-400" placeholder="Database password">
+                                                    </div>
+                                                    <div class="flex flex-col mt-4">
+                                                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="database_host">
+                                                            Database host *
+                                                        </label>
+                                                        <input required name="database_host" id="database_host" type="text" class="flex-grow h-8 px-2 border rounded border-grey-400" placeholder="Database host" value="127.0.0.1">
+                                                    </div>
+                                                    <div class="flex flex-col mt-4">
+                                                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="database_port">
+                                                            Database port *
+                                                        </label>
+                                                        <input required name="database_port" id="database_port" type="text" class="flex-grow h-8 px-2 border rounded border-grey-400" placeholder="Database port" value="3306">
+                                                    </div>
+                                                    <div class="flex flex-col mt-4">
+                                                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="database_name">
+                                                            Database name
+                                                        </label>
+                                                        <input name="database_name" id="database_name" type="text" class="flex-grow h-8 px-2 border rounded border-grey-400" placeholder="Database name">
+                                                    </div>
+
+                                                    <div class="flex flex-col mt-4">
+                                                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="admin_email">
+                                                            Admin email *
+                                                        </label>
+                                                        <input name="admin_email" id="admin_email" type="email" class="flex-grow h-8 px-2 border rounded border-grey-400" placeholder="Admin email">
+                                                    </div>
+                                                    <div class="flex flex-col mt-4">
+                                                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="admin_username">
+                                                            Admin username *
+                                                        </label>
+                                                        <input required name="admin_username" id="admin_username" type="text" class="flex-grow h-8 px-2 border rounded border-grey-400" placeholder="Admin username">
+                                                    </div>
+                                                    <div class="flex flex-col mt-4">
+                                                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="admin_password">
+                                                            Admin password
+                                                        </label>
+                                                        <input name="admin_password" id="admin_password" type="password" class="flex-grow h-8 px-2 border rounded border-grey-400" placeholder="Admin password">
+                                                    </div>
+                                                    <div class="flex flex-col mt-2">
+                                                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white text-sm font-semibold py-2 px-4 rounded">
+                                                            Create my website!
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                window.addEventListener("load", function () {
+                    // store tabs variable
+                    var myTabs = document.querySelectorAll("#tabs > li > a");
+                    function myTabClicks(tabClickEvent) {
+                        for (var i = 0; i < myTabs.length; i++) {
+                            myTabs[i]
+                                .classList
+                                .remove("border-l", "border-t", "border-r", "rounded-t", "text-blue-700");
+                            myTabs[i]
+                                .classList
+                                .add("text-blue-500", "hover:text-blue-800");
+                        }
+                        var clickedTab = tabClickEvent.currentTarget;
+                        clickedTab
+                            .classList
+                            .add("border-l", "border-t", "border-r", "rounded-t", "text-blue-700");
+                        clickedTab
+                            .classList
+                            .remove("text-blue-500", "hover:text-blue-800");
+                        tabClickEvent.preventDefault();
+
+                        document
+                            .querySelector("#sqlite")
+                            .classList
+                            .add("hidden");
+                        document
+                            .querySelector("#mysql")
+                            .classList
+                            .add("hidden");
+
+                        var anchorReference = tabClickEvent.target;
+                        var activePaneId = anchorReference.getAttribute("href");
+                        var activePane = document.querySelector(activePaneId);
+                        activePane
+                            .classList
+                            .remove("hidden");
+                    }
+                    for (i = 0; i < myTabs.length; i++) {
+                        myTabs[i].addEventListener("click", myTabClicks)
+                    }
+                });
+            </script>
+        </main>
+
+        <footer class="bg-gray-100">
+            <div class="container mx-auto px-6 pt-10 pb-6"></div>
+        </div>
+    </div>
+    <p class="text-center hover:underline text-gray-600 hover:text-orange-500">Powered by Open Course Platform</p>
+</div>
+</footer>
+</body>
+
+</html>

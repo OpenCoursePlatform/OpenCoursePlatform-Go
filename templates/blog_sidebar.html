@@ -1,0 +1,10 @@
+{{define "blog_sidebar"}}
+    <div class="w-full lg:w-1/4 lg:pr-4">
+        <div class="bg-white lg:px-8 px-6 py-4 shadow-xl z-10 relative mb-8 rounded lg:block hidden">
+            <h5 class="mb-3 lg:mb-2 text-gray-500 uppercase tracking-wide font-bold text-sm lg:text-xs">Blog posts</h5>
+            {{ range .Posts }}
+                <a href="/blog/{{ .Slug }}" class="font-semibold text-gray-900 block my-4 hover:underline">{{ .Title }}</a>
+            {{ end }}
+        </div>
+    </div>
+{{end}}

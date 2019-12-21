@@ -1,0 +1,45 @@
+{{ template "header.html" . }}
+
+<div class="container mx-auto lg:px-8 px-4" style="margin-top: -7rem;">
+    <div class="flex md:flex-row flex-wrap">
+        {{ template "admin_sidebar" .}}
+        <div class="w-full lg:w-3/4 lg:pl-4">
+            <div class="flex flex-col items-center flex-1 w-full justify-center px-4 sm:px-0">
+                <div class="z-10 flex rounded-lg shadow-lg w-full bg-white sm:mx-0 p-10">
+                    <div class="flex flex-col w-full">
+                        <div class="flex flex-col flex-1 justify-center mb-8">
+                            <h1 class="text-4xl text-center font-thin">Update blog post</h1>
+                            <div class="w-full mt-4">
+                                <form class="form-horizontal w-full mx-auto" method="POST">
+                                    <div class="flex flex-col mt-4">
+                                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="title">
+                                            Title
+                                        </label>
+                                        <input id="title" type="text" class="flex-grow h-8 px-2 border rounded border-grey-400" name="title" value="{{ .Post.Title }}" placeholder="Title">
+                                    </div>
+                                    <div class="flex flex-col mt-4">
+                                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="text">
+                                            Text
+                                        </label>
+                                        <textarea name="text" id="text" class="resize-y px-2 border rounded focus:outline-none focus:shadow-outline" style="height: 300px;">{{ .Post.Text }}</textarea>
+                                    </div>
+                                    <div class="flex flex-col mt-8">
+                                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white text-sm font-semibold py-2 px-4 rounded">
+                                                Update
+                                            </button>
+                                    </div>
+                                </form>
+                                <div class="text-center mt-4">
+                                    <a class="no-underline hover:underline text-blue-dark text-xs" href="/sign/in">
+                                        Delete blog post
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ template "footer.html" . }}

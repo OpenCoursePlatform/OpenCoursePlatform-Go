@@ -1,0 +1,36 @@
+{{ template "header.html" . }}
+
+<div class="container mx-auto lg:px-8 px-4" style="margin-top: -7rem;">
+    <div class="flex md:flex-row flex-wrap">
+        <div class="w-full lg:w-1/4 lg:pr-4">
+            <div class="flex md:flex-row flex-wrap bg-white lg:px-8 px-6 py-4 shadow-xl z-10 relative mb-8 rounded lg:block hidden">
+
+                <!-- Using utilities: -->
+                <a href="/forum/new" class="block text-center w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 rounded">
+                    New Forum Topic
+                </a>
+                <h5 class="mb-3 lg:mb-2 text-gray-500 uppercase tracking-wide font-bold text-sm lg:text-xs mt-3">Recent forum topics</h5>
+
+                {{ range .Posts }}
+                    <a href="/forum/{{ .Slug }}" class="font-semibold text-gray-900 block my-4 hover:underline">
+                        {{ .Title }}
+                    </a>
+                {{ end }}
+
+            </div>
+        </div>
+        <div class="w-full lg:w-3/4 lg:pl-4">
+            {{ range .Posts }}
+                <div class="bg-white p-8 shadow-xl z-10 relative mb-8 rounded">
+                    <a href="/forum/{{ .Slug }}" class="hover:underline text-xl mb-3 font-bold text-indigo-700">{{ .Title }}</a>
+
+                    <p class="mb-4">
+                        {{ .Text }}
+                    </p>
+                </div>
+            {{ end }}
+        </div>
+    </div>
+</div>
+
+{{ template "footer.html" . }}

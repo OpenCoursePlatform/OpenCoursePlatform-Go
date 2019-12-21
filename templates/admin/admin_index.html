@@ -1,0 +1,48 @@
+{{ template "header.html" . }}
+
+<div class="container mx-auto lg:px-8 px-4" style="margin-top: -7rem;">
+    <div class="flex md:flex-row flex-wrap">
+        {{ template "admin_sidebar" .}}
+        <div class="w-full lg:w-3/4">
+            <div class="flex mb-3">
+                <div class="bg-white p-3 shadow-xl z-10 relative rounded w-full">
+                    <div class="text-gray-900 font-bold text-4xl text-center">{{ .PageViews }}</div>
+                    <p class="text-gray-700 text-sm text-center">Page views</p>
+                </div>
+                <div class="bg-white ml-6 p-3 shadow-xl z-10 relative rounded w-full">
+                    <div class="text-gray-900 font-bold text-4xl text-center">{{ .Errors }}</div>
+                    <p class="text-gray-700 text-sm text-center">Errors</p>
+                </div>
+                <div class="bg-white ml-6 p-3 shadow-xl z-10 relative rounded w-full">
+                    <div class="text-gray-900 font-bold text-4xl text-center">{{ .Tickets }}</div>
+                    <p class="text-gray-700 text-sm text-center">Tickets</p>
+                </div>
+            </div>
+            <div class="flex">
+                <div class="bg-white shadow-xl z-10 relative rounded w-full">
+                    <table class="table-auto w-full">
+                        <thead>
+                            <tr>
+                                <th class="text-left px-4 py-2">Page</th>
+                                <th class="text-left px-4 py-2">Views</th>
+                                <th class="text-left px-4 py-2">Speed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {{ range .Pages }}
+                            <tr>
+                                <td class="border px-4 py-2">{{ .Path }}</td>
+                                <td class="border px-4 py-2">{{ .Views }}</td>
+                                <td class="border px-4 py-2">{{ .Speed }} ns</td>
+
+                            </tr>
+                        {{ end }}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{{ template "footer.html" . }}

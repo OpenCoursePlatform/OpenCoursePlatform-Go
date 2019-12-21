@@ -1,0 +1,15 @@
+{{define "sidebar"}}
+    <div class="w-full lg:w-1/4 lg:pr-4">
+        <div class="bg-white lg:px-8 px-6 py-4 shadow-xl z-10 relative mb-8 rounded lg:block hidden">
+            <a href="/" class="font-semibold text-indigo-700 block my-4">Home</a>
+            {{ $prev_category := "" }}
+            {{ range .Courses }}
+                {{if not (eq .Category $prev_category) }}
+                    {{ $prev_category = .Category }}
+                    <h5 class="mb-3 lg:mb-2 text-gray-500 uppercase tracking-wide font-bold text-sm lg:text-xs">{{ $prev_category }}</h5>
+                {{end}}
+                <a href="/courses/{{ .Slug }}" class="font-semibold text-gray-900 block my-4 hover:underline">{{ .Name }}</a>
+            {{ end }}
+        </div>
+    </div>
+{{end}}

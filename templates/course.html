@@ -1,0 +1,38 @@
+{{ template "header.html" . }}
+{{ $CourseSlug := .CourseSlug }}
+
+<div class="container mx-auto lg:px-8 px-4" style="margin-top: -7rem;">
+    <div class="flex md:flex-row flex-wrap">
+        <div class="w-full lg:w-1/4 lg:pr-4">
+            <div class="bg-white lg:px-8 px-6 py-4 shadow-xl z-10 relative mb-8 rounded lg:block hidden">
+                {{ $Slug := .Course.Slug }}
+                {{ $prev_category := "" }}
+                {{ range .Courses }}
+                    {{if not (eq .Category $prev_category) }}
+                        {{ $prev_category = .Category }}
+                        <h5 class="mb-3 lg:mb-2 text-gray-500 uppercase tracking-wide font-bold text-sm lg:text-xs">{{ $prev_category }}</h5>
+                    {{end}}
+                    {{ if eq .Slug $Slug }}
+                        <a href="/courses/{{ .Slug }}" class="font-semibold text-indigo-700 block my-4 hover:underline">{{ .Name }}</a>
+                    {{ else }}
+                        <a href="/courses/{{ .Slug }}" class="font-semibold text-gray-900 block my-4 hover:underline">{{ .Name }}</a>
+                    {{ end }}
+                {{ end }}
+            </div>
+        </div>
+        <div class="w-full lg:w-3/4 lg:pl-4">
+            {{ range .Modules }}
+                <div class="mb-3 z-10 relative rounded max-w-sm max-w-sm w-full lg:max-w-full lg:flex">
+                    <div class="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden" style="background-image: url('https://tailwindcss.com/img/card-left.jpg')" title="Woman holding a mug"></div>
+                    <div class="w-full border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+                        <div class="mb-8">
+                            <a href="/courses/{{ $CourseSlug }}/{{ .Slug }}" class="text-gray-900 font-bold text-xl mb-2">{{ .Name }}</a>
+                            <p class="text-gray-700 text-base">{{ .Description }}</p>
+                        </div>
+                    </div>
+                </div>
+            {{ end }}
+        </div>
+    </div>
+</div>
+{{ template "footer.html" . }}

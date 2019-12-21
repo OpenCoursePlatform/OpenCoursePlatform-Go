@@ -1,0 +1,35 @@
+{{ template "header.html" . }}
+
+<div class="container mx-auto lg:px-8 px-4" style="margin-top: -7rem;">
+    <div class="flex md:flex-row flex-wrap">
+        <div class="w-full">
+            {{ range .Responses }}
+                <div class="w-full bg-white p-8 shadow-xl z-10 relative mb-8 rounded break-words">
+                    <p class="mb-4">
+                        {{ . }}
+                    </p>
+                </div>
+            {{ end }}
+        </div>
+        <div class="bg-white p-8 shadow-xl z-10 relative mb-8 rounded w-full">
+            <form class="form-horizontal" method="POST">
+                <div class="flex flex-col mt-4">
+                    <h2 class="text-l font-bold text-indigo-800">New response</h2>
+                </div>
+                <div class="flex flex-col mt-4">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="text">
+                        Text
+                    </label>
+                    <textarea name="text" id="text" class="resize-y px-2 border rounded focus:outline-none focus:shadow-outline" style="height: 100px;" Placeholder="Text"></textarea>
+                </div>
+                <div class="flex flex-col mt-4">
+                    <button type="submit" class="text-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        New response
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{ template "footer.html" . }}

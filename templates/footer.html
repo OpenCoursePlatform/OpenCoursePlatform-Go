@@ -1,0 +1,74 @@
+{{ $BlogActivated := .Settings.BlogActivated }}
+{{ $ForumActivated := .Settings.ForumActivated }}
+{{ $PodcastActivated := .Settings.PodcastActivated }}
+</main>
+
+<footer class="bg-gray-100">
+<div class="container mx-auto px-6 pt-10 pb-6">
+    <div class="flex flex-wrap">
+        {{ $prev_category := "" }}
+        {{ range .Footer }}
+            {{if not (eq .Category $prev_category) }}
+                {{ if ne $prev_category "" }}
+            </ul>
+        </div>
+    {{ end }}
+    {{ $prev_category = .Category }}
+    <div class="w-full md:w-1/4 text-center md:text-left">
+        <h5 class="uppercase mb-6 font-bold">{{ .Category }}</h5>
+        <ul class="mb-4">
+            <li class="mt-2">
+                {{ if eq .Title "Blog" }}
+                    {{ if eq $BlogActivated "1" }}
+                        <a href="{{ .Slug }}" class="hover:underline text-gray-600 hover:text-orange-500">{{ .Title }}</a>
+                    {{ end }}
+                {{ else if eq .Title "Forum" }}
+                    {{ if eq $ForumActivated "1" }}
+                        <a href="{{ .Slug }}" class="hover:underline text-gray-600 hover:text-orange-500">{{ .Title }}</a>
+                    {{ end }}
+                {{ else if eq .Title "Podcast" }}
+                    {{ if eq $PodcastActivated "1" }}
+                        <a href="{{ .Slug }}" class="hover:underline text-gray-600 hover:text-orange-500">{{ .Title }}</a>
+                    {{ end }}
+                {{ else }}
+                    <a href="{{ .Slug }}" class="hover:underline text-gray-600 hover:text-orange-500">{{ .Title }}</a>
+                {{ end }}
+            </li>
+        {{ else }}
+            <li class="mt-2">
+                {{ if eq .Title "Blog" }}
+                    {{ if eq $BlogActivated "1" }}
+                        <a href="{{ .Slug }}" class="hover:underline text-gray-600 hover:text-orange-500">{{ .Title }}</a>
+                    {{ end }}
+                {{ else if eq .Title "Forum" }}
+                    {{ if eq $ForumActivated "1" }}
+                        <a href="{{ .Slug }}" class="hover:underline text-gray-600 hover:text-orange-500">{{ .Title }}</a>
+                    {{ end }}
+                {{ else if eq .Title "Podcast" }}
+                    {{ if eq $PodcastActivated "1" }}
+                        <a href="{{ .Slug }}" class="hover:underline text-gray-600 hover:text-orange-500">{{ .Title }}</a>
+                    {{ end }}
+                {{ else }}
+                    <a href="{{ .Slug }}" class="hover:underline text-gray-600 hover:text-orange-500">{{ .Title }}</a>
+                {{ end }}
+            </li>
+        {{end}}
+    {{ end }}
+</ul>
+</div>
+</div>
+<p class="text-center hover:underline text-gray-600 hover:text-orange-500">Powered by Open Course Platform</p>
+</div>
+</footer>
+<script>
+var els = document.getElementsByTagName("pre");
+for (var i = 0, all = els.length; i < all; i++) {
+els[i]
+.classList
+.add('prettyprint');
+}
+</script>
+<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+</body>
+
+</html>

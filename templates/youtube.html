@@ -1,0 +1,20 @@
+{{ template "header.html" . }}
+
+<div class="container mx-auto lg:px-8 px-4" style="margin-top: -7rem;">
+    <div class="flex md:flex-row flex-wrap">
+
+        {{ template "session_sidebar" .}}
+
+        <div class="w-full lg:w-3/4 lg:pl-4">
+            <div class="mb-3 z-10 relative rounded max-w-sm max-w-sm w-full lg:max-w-full lg:flex">
+                <div class="w-full p-8 shadow bg-white rounded flex flex-col justify-between leading-normal">
+                    <div class="mb-8">
+                        {{ .Text | Markdown }}
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ .Youtube }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ template "footer.html" . }}

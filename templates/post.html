@@ -1,0 +1,74 @@
+{{ template "header.html" . }}
+
+{{ $Title := "" }}
+{{ $title_not_used := true }}
+{{ range .Posts }}
+    {{ if $title_not_used }}
+        {{ $title_not_used = false }}
+        {{ $Title = .Title }}
+    {{ end }}
+{{ end }}
+
+<div class="container mx-auto lg:px-8 px-4" style="margin-top: -7rem;">
+    <div class="flex md:flex-row flex-wrap">
+        <div class="w-full lg:w-1/4 lg:pr-4">
+            <div class="bg-white lg:px-8 px-6 py-4 shadow-xl z-10 relative mb-8 rounded lg:block hidden">
+                <a href="/forum/new" class="block text-center w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 rounded">
+                    New Forum Topic
+                </a>
+                <h5 class="mb-3 lg:mb-2 text-gray-500 uppercase tracking-wide font-bold text-sm lg:text-xs mt-3">Recent forum topics</h5>
+                {{ range .Topics }}
+                    {{ if eq $Title .Title }}
+                        <p class="font-semibold text-indigo-700 block my-4">
+                            {{ .Title }}
+                        </p>
+                    {{ else }}
+                        <a href="/forum/{{ .Slug }}" class="font-semibold text-gray-900 block my-4 hover:underline">
+                            {{ .Title }}
+                        </a>
+                    {{ end }}
+                {{ end }}
+
+            </div>
+        </div>
+        <div class="w-full lg:w-3/4 lg:pl-4">
+
+            <main>
+                {{ $title_not_used := true }}
+                {{ range .Posts }}
+
+                    <div class="bg-white p-8 shadow-xl z-10 relative mb-8 rounded">
+                        {{ if $title_not_used }}
+                            {{ $title_not_used = false }}
+                            <p class="text-xl mb-3 font-bold text-indigo-700">{{ .Title }}</p>
+                        {{ end }}
+                        <p class="mb-4 break-words">
+                            {{ .Text }}
+                        </p>
+                    </div>
+                {{ end }}
+                <div class="z-10 flex rounded-lg shadow-lg w-full bg-white sm:mx-0 p-4">
+                    <div class="flex flex-col w-full">
+                        <div class="flex flex-col flex-1 justify-center mb-8">
+                            <form class="form-horizontal" method="POST">
+                                <div class="flex flex-col mt-4">
+                                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="text">
+                                            Text
+                                        </label>
+                                    <textarea name="text" id="text" class="resize-y px-2 border rounded focus:outline-none focus:shadow-outline" style="height: 150px;" Placeholder="Text"></textarea>
+                                </div>
+                                <div class="flex flex-col mt-4">
+                                    <button type="submit" class="text-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                        Answer topic
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+        </div>
+    </div>
+</div>
+{{ template "footer.html" . }}

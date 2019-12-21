@@ -1,0 +1,33 @@
+{{ template "header.html" . }}
+
+<div class="container mx-auto lg:px-8 px-4" style="margin-top: -7rem;">
+    <div class="flex md:flex-row flex-wrap">
+        {{ template "admin_sidebar" .}}
+        <div class="w-full lg:w-3/4">
+            <div class="flex">
+                <div class="bg-white shadow-xl z-10 relative rounded w-full">
+                    <table class="table-auto w-full">
+                        <thead>
+                            <tr>
+                                <th class="text-left px-4 py-2">Ticket</th>
+                                <th class="text-left px-4 py-2">Username</th>
+                                <th class="text-left px-4 py-2">Ticket solved</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {{ range .Tickets }}
+                            <tr>
+                                <td class="border px-4 py-2"><a class="hover:underline" href="/admin/tickets/{{ .Slug }}">{{ .Title }}</a></td>
+                                <td class="border px-4 py-2"><a class="hover:underline" href="/admin/tickets/{{ .Slug }}">{{ .User }}</a></td>
+                                <td class="border px-4 py-2"><a class="hover:underline" href="/admin/tickets/{{ .Slug }}">{{ if .Solved }} Yes {{ else }} No {{ end }}</a></td>
+                            </tr>
+                        {{ end }}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{{ template "footer.html" . }}

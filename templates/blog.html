@@ -1,0 +1,16 @@
+{{ template "header.html" . }}
+<div class="container mx-auto lg:px-8 px-4" style="margin-top: -7rem;">
+    <div class="flex md:flex-row flex-wrap">
+        {{ template "blog_sidebar" .}}
+        <div class="w-full lg:w-3/4 lg:pl-4">
+
+            {{ range .Posts }}
+                <div class="bg-white p-8 shadow-xl z-10 relative mb-8 rounded">
+                    <a href="/blog/{{ .Slug }}" class="text-xl mb-3 font-bold text-indigo-700 hover:underline">{{ .Title }}</a>
+                    {{ .Text | Markdown }}
+                </div>
+            {{ end }}
+        </div>
+    </div>
+</div>
+{{ template "footer.html" . }}

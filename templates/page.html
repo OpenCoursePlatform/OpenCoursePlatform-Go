@@ -1,0 +1,15 @@
+{{ template "header.html" . }}
+    <div class="container mx-auto lg:px-8 px-4" style="margin-top: -7rem;">
+        <div class="flex md:flex-row flex-wrap">
+            {{ template "sidebar" .}}
+            <div class="w-full lg:w-3/4 lg:pl-4">
+
+                <div class="bg-white p-8 shadow-xl z-10 relative mb-8 rounded">
+                    <h2 class="text-xl mb-3 font-bold text-indigo-700">{{ .Page.Title }}</h2>
+                    {{ .Page.Text | Markdown }}
+                </div>
+
+            </div>
+        </div>
+    </div>
+{{ template "footer.html" . }}

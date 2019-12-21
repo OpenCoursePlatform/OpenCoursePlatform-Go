@@ -1,0 +1,33 @@
+{{ template "header.html" . }}
+{{ $CourseSlug := .Course.Slug }}
+{{ $ModuleSlug := .ModuleSlug }}
+
+<div class="container mx-auto lg:px-8 px-4" style="margin-top: -7rem;">
+    <div class="flex md:flex-row flex-wrap">
+
+        <div class="w-full lg:w-1/4 lg:pr-4">
+            <div class="bg-white lg:px-8 px-6 py-4 shadow-xl z-10 relative mb-8 rounded lg:block hidden">
+                <h5 class="mb-3 lg:mb-2 text-gray-500 uppercase tracking-wide font-bold text-sm lg:text-xs">Modules</h5>
+                {{ $Slug := .Module.Slug }}
+                {{ range .Modules }}
+                    {{ if eq .Slug $Slug }}
+                        <a href="/courses/{{ $CourseSlug }}/{{ .Slug }}" class="font-semibold text-indigo-700 block my-4 hover:underline">{{ .Name }}</a>
+                    {{ else }}
+                        <a href="/courses/{{ $CourseSlug }}/{{ .Slug }}" class="font-semibold text-gray-900 block my-4 hover:underline">{{ .Name }}</a>
+                    {{ end }}
+                {{ end }}
+            </div>
+        </div>
+
+        <div class="w-full lg:w-3/4 lg:pl-4">
+            {{ range .Sessions }}
+                <div class="mb-3 z-10 relative rounded max-w-sm max-w-sm w-full lg:max-w-full lg:flex">
+                    <div class="w-full border border-gray-400 bg-white rounded p-4 flex flex-col justify-between leading-normal">
+                        <a href="/courses/{{ $CourseSlug }}/{{ $ModuleSlug }}/{{ .Slug }}" class="text-gray-900 font-light text-2xl mb-2">{{ .Index }}{{ .Name }}</a>
+                    </div>
+                </div>
+            {{ end }}
+        </div>
+    </div>
+</div>
+{{ template "footer.html" . }}
