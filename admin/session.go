@@ -2,6 +2,7 @@ package admin
 
 import (
 	"database/sql"
+	"encoding/json"
 	"net/http"
 	"strconv"
 
@@ -209,6 +210,100 @@ func UpdateSessionYoutubeInDB(db *sql.DB, text, youtube string, id int) error {
 	return nil
 }
 
+// DeleteQuestions ...
+func DeleteQuestions(db *sql.DB, sessionID int) error {
+	rows, err := db.Query(`SELECT id FROM session_multiple_choice WHERE session_id = ?`, sessionID) // check err
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+	var multipleChoiceIDS []int
+	for rows.Next() {
+		var multipleChoiceID int
+		err = rows.Scan(&multipleChoiceID) // check err
+		if err != nil {
+			return err
+		}
+		multipleChoiceIDS = append(multipleChoiceIDS, multipleChoiceID)
+	}
+	for index := range multipleChoiceIDS {
+		form, err := db.Prepare("DELETE FROM session_multiple_choice_answers WHERE multiple_choice_id = ?")
+		if err != nil {
+			return err
+		}
+		_, err = form.Exec(multipleChoiceIDS[index])
+		if err != nil {
+			return err
+		}
+		form, err = db.Prepare("DELETE FROM session_multiple_choice WHERE id = ?")
+		if err != nil {
+			return err
+		}
+		_, err = form.Exec(multipleChoiceIDS[index])
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// InsertMultipleChoiceQuestionInDB ...
+func InsertMultipleChoiceQuestionInDB(db *sql.DB, questionText string, sessionID int) (int64, error) {
+	insForm, err := db.Prepare("INSERT INTO session_multiple_choice (question, session_id) VALUES (?, ?)")
+	if err != nil {
+		return 0, err
+	}
+	res, err := insForm.Exec(questionText, sessionID)
+	if err != nil {
+		return 0, err
+	}
+	id, err := res.LastInsertId()
+	if err != nil {
+		return 0, err
+	}
+	return id, nil
+}
+
+// InsertMultipleChoiceOptionInDB ...
+func InsertMultipleChoiceOptionInDB(db *sql.DB, option course.Option, questionID int64) error {
+	insForm, err := db.Prepare("INSERT INTO session_multiple_choice_answers (multiple_choice_id, answer, is_correct) VALUES (?, ?, ?)")
+	if err != nil {
+		return err
+	}
+	_, err = insForm.Exec(questionID, option.Text, option.IsCorrect)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateMultipleChoiceInDB ...
+func UpdateMultipleChoiceInDB(db *sql.DB, questions []course.Question, sessionID int) error {
+	err := DeleteQuestions(db, sessionID)
+	if err != nil {
+		return err
+	}
+	for questionIndex := range questions {
+		questionID, err := InsertMultipleChoiceQuestionInDB(db, questions[questionIndex].Text, sessionID)
+		if err != nil {
+			return err
+		}
+		for optionIndex := range questions[questionIndex].Options {
+			err = InsertMultipleChoiceOptionInDB(db, questions[questionIndex].Options[optionIndex], questionID)
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
+// SessionBody ...
+type SessionBody struct {
+	Name      string
+	Questions []course.Question
+}
+
 // UpdateSession ...
 func UpdateSession(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
@@ -226,23 +321,47 @@ func UpdateSession(w http.ResponseWriter, r *http.Request) {
 		helpers.HandleError(err)
 	}
 
-	newName := r.FormValue("name")
-
-	err = UpdateSessionNameInDB(db, newName, sessionID)
-	if err != nil {
-		helpers.HandleError(err)
-	}
-
 	if sessionType == 1 {
+		newName := r.FormValue("name")
+
+		err = UpdateSessionNameInDB(db, newName, sessionID)
+		if err != nil {
+			helpers.HandleError(err)
+		}
+
 		newText := r.FormValue("text")
 		err = UpdateSessionTextInDB(db, newText, sessionID)
 		if err != nil {
 			helpers.HandleError(err)
 		}
 	} else if sessionType == 2 {
+		newName := r.FormValue("name")
+
+		err = UpdateSessionNameInDB(db, newName, sessionID)
+		if err != nil {
+			helpers.HandleError(err)
+		}
+
 		newText := r.FormValue("text")
 		newYoutube := r.FormValue("youtube")
 		err = UpdateSessionYoutubeInDB(db, newText, newYoutube, sessionID)
+		if err != nil {
+			helpers.HandleError(err)
+		}
+	} else if sessionType == 3 {
+		var sessionBody SessionBody
+
+		err := json.NewDecoder(r.Body).Decode(&sessionBody)
+		if err != nil {
+			helpers.HandleError(err)
+			helpers.InternalServerError(w)
+			return
+		}
+		err = UpdateSessionNameInDB(db, sessionBody.Name, sessionID)
+		if err != nil {
+			helpers.HandleError(err)
+		}
+		err = UpdateMultipleChoiceInDB(db, sessionBody.Questions, sessionID)
 		if err != nil {
 			helpers.HandleError(err)
 		}

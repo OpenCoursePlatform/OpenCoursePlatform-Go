@@ -14,7 +14,7 @@
                         </div>
                         {{ $Correct := 0 }}
                         {{ range .Options }}
-                            {{ if .IsCorrect }}
+                            {{ if .is_correct }}
                                 {{ if gt $Correct 0 }}
                                     {{ $Correct = 2 }}
                                 {{ else }}
@@ -29,27 +29,27 @@
                                 <div class="md:w-2/3 block">
                                     {{ if gt $Correct 1 }}
                                         {{ if .Checked }}
-                                            <input class="mr-2 leading-tight" type="checkbox" name="{{ $Text }}" value="{{ .Text }}" id="{{ .Text }}" checked="checked">
+                                            <input class="mr-2 leading-tight" type="checkbox" name="{{ $Text }}" value="{{ .text }}" id="{{ .text }}" checked="checked">
                                         {{ else }}
-                                            <input class="mr-2 leading-tight" type="checkbox" name="{{ $Text }}" value="{{ .Text }}" id="{{ .Text }}">
+                                            <input class="mr-2 leading-tight" type="checkbox" name="{{ $Text }}" value="{{ .text }}" id="{{ .text }}">
                                         {{ end }}
                                     {{ else }}
                                         {{ if .Checked }}
-                                            <input class="mr-2 leading-tight" type="radio" name="{{ $Text }}" value="{{ .Text }}" id="{{ .Text }}" checked="checked">
+                                            <input class="mr-2 leading-tight" type="radio" name="{{ $Text }}" value="{{ .text }}" id="{{ .text }}" checked="checked">
                                         {{ else }}
-                                            <input class="mr-2 leading-tight" type="radio" name="{{ $Text }}" value="{{ .Text }}" id="{{ .Text }}">
+                                            <input class="mr-2 leading-tight" type="radio" name="{{ $Text }}" value="{{ .text }}" id="{{ .text }}">
                                         {{ end }}
                                     {{ end }}
-                                    {{ if eq .Checked .IsCorrect }}
-                                        <label class="text-green-500 font-bold" for="{{ .Text }}">
+                                    {{ if eq .Checked .is_correct }}
+                                        <label class="text-green-500 font-bold" for="{{ .text }}">
                                             <span class="text-sm">
-                                                {{ .Text }} <span class="text-gray-700 font-thin">- Correct</span>
+                                                {{ .text }} <span class="text-gray-700 font-thin">- Correct</span>
                                             </span>
                                         </label>
                                     {{ else }}
-                                        <label class="text-red-500 font-bold" for="{{ .Text }}">
+                                        <label class="text-red-500 font-bold" for="{{ .text }}">
                                             <span class="text-sm">
-                                                {{ .Text }} <span class="text-gray-700 font-thin">- Incorrect</span>
+                                                {{ .text }} <span class="text-gray-700 font-thin">- Incorrect</span>
                                             </span>
                                         </label>
                                     {{ end }}

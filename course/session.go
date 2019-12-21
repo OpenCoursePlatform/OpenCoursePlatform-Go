@@ -56,8 +56,8 @@ Option struct contains question data
 for rendering.
 */
 type Option struct {
-	Text      string
-	IsCorrect bool
+	Text      string `json:"text"`
+	IsCorrect bool   `json:"is_correct"`
 	Checked   bool
 }
 

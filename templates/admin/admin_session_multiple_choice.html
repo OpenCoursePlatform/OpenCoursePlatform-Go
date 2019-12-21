@@ -10,33 +10,43 @@
                         <div class="flex flex-col flex-1 justify-center mb-8">
                             <h1 class="text-4xl text-center font-thin">Update Multiple Choice</h1>
                             <div class="w-full mt-4">
-                                <form class="form-horizontal w-full mx-auto" method="POST">
+                                <div class="form-horizontal w-full mx-auto">
                                     <div class="flex flex-col mt-4">
                                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="name">
                                             Name
                                         </label>
-                                        <input id="name" type="text" class="flex-grow h-8 px-2 border rounded border-grey-400" name="name" placeholder="Name" value="{{ .Name }}">
+                                        <input id="name" type="text" class="flex-grow h-8 px-2 border rounded border-grey-400" name="name" placeholder="Name" v-model="name">
                                     </div>
                                     <div v-for="(question, index) in questions">
                                         <div class="flex flex-col mt-4">
                                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                                             Question
                                         </label>
-                                            <input @keydown="CheckQuestions" type="text" class="flex-grow h-8 px-2 border rounded border-grey-400" name="question" placeholder="Question" v-model="question.text">
+                                            <input @keyup="CheckQuestions" type="text" class="flex-grow h-8 px-2 border rounded border-grey-400" name="question" placeholder="Question" v-model="questions[index].text">
                                         </div>
-                                        <div class="flex flex-col mt-4" v-for="option in question.options">
-                                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                                                Option
-                                            </label>
-                                            <input @keydown="CheckOptions(index)" type="text" class="flex-grow h-8 px-2 border rounded border-grey-400" name="option" placeholder="Option" v-model="option">
+                                        <div v-for="(option, option_index) in question.options">
+                                            <div class="flex flex-col mt-4">
+                                                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                                                    Option
+                                                </label>
+                                                <input @keyup="CheckOptions(index)" type="text" class="flex-grow h-8 px-2 border rounded border-grey-400" name="option" placeholder="Option" v-model="question.options[option_index].text">
+                                            </div>
+                                            <div>
+                                                <input class="mr-2 leading-tight" type="checkbox" v-model="question.options[option_index].is_correct">
+                                                <label class="text-gray-700 font-bold">
+                                                    <span v-if="question.options[option_index].is_correct">${ question.options[option_index].text } is correct</span>
+                                                    <span v-if="!question.options[option_index].is_correct">${ question.options[option_index].text } is incorrect</span>
+                                                </label>
+                                            </div>
                                         </div>
+
                                     </div>
                                     <div class="flex flex-col mt-8">
-                                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white text-sm font-semibold py-2 px-4 rounded">
+                                        <button @click="Submit" class="bg-blue-500 hover:bg-blue-700 text-white text-sm font-semibold py-2 px-4 rounded">
                                             Update multiple-choice session
                                         </button>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -45,7 +55,8 @@
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
     var app = new Vue({
         el: '#app',
@@ -53,17 +64,24 @@
             "${", "}"
         ],
         data: {
+            name: "{{ .Name }}",
             questions: [
                 {{ range .Questions }}
-                    {
-                        text: "{{ .Text }}",
-                        options: [
-                            {{ range .Options }}
-                                "{{ .Text }}",
-                            {{ end }}
-                            ""
-                        ]
-                    },
+                {
+                    text: "{{ .Text }}",
+                    options: [
+                        {{ range .Options }}
+                        {
+                            text: "{{ .text }}",
+                            is_correct: {{ .is_correct }}
+                        },
+                        {{ end }}
+                        {
+                            text: "",
+                            is_correct: false
+                        }
+                    ]
+                },
                 {{ end }}
                 {
                     text: "",
@@ -73,13 +91,10 @@
         },
         methods: {
             CheckQuestions() {
-                console.log("hej")
-            },
-            CheckOptions(index) {
                 var shouldAdd = true
-                for (option in this.questions[index].options) {
+                for (question in this.questions) {
                     if (shouldAdd) {
-                        if (this.questions[index].options[option] == "") {
+                        if (this.questions[question].text == "") {
                             shouldAdd = false
                         }
                     } else {
@@ -87,8 +102,49 @@
                     }
                 }
                 if (shouldAdd) {
-                    this.questions[index].options.push("");
+                    this
+                        .questions
+                        .push({text: "", options: [{ text: "", is_correct: false }]});
                 }
+            },
+            CheckOptions(index) {
+                var shouldAdd = true
+                for (option in this.questions[index].options) {
+                    if (shouldAdd) {
+                        if (this.questions[index].options[option].text == "") {
+                            shouldAdd = false
+                        }
+                    } else {
+                        break;
+                    }
+                }
+                if (shouldAdd) {
+                    this
+                        .questions[index]
+                        .options
+                        .push({ text: "", is_correct: false });
+                }
+            },
+            Submit() {
+                for (question in this.questions) {
+                    if (this.questions[question].text == "") {
+                        this.questions.splice(question, 1);
+                    } else {
+                        for (option in this.questions[question].options) {
+                            if (this.questions[question].options[option].text == "") {
+                                this.questions[question].options.splice(option, 1);
+                            }
+                        }
+                    }
+                }
+
+                axios.post('', {name: this.name, questions: this.questions})
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
             }
         }
     })
