@@ -270,6 +270,52 @@ func DeleteModuleInDB(db *sql.DB, slug string) error {
 		return err
 	}
 
+	rows, err := db.Query(`
+	SELECT id
+	FROM session
+	WHERE module_id = ?`, moduleID)
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+
+	var sessionIDS []int
+	for rows.Next() {
+		var sessionID int
+		err = rows.Scan(&sessionID)
+		if err != nil {
+			return err
+		}
+		sessionIDS = append(sessionIDS, sessionID)
+	}
+	err = rows.Err()
+	if err != nil {
+		return err
+	}
+
+	for index := range sessionIDS {
+		form, err := db.Prepare("DELETE FROM session_text WHERE session_id = ?")
+		if err != nil {
+			return err
+		}
+		_, err = form.Exec(sessionIDS[index])
+		if err != nil {
+			return err
+		}
+		form, err = db.Prepare("DELETE FROM session_youtube WHERE session_id = ?")
+		if err != nil {
+			return err
+		}
+		_, err = form.Exec(sessionIDS[index])
+		if err != nil {
+			return err
+		}
+		err = DeleteQuestions(db, sessionIDS[index])
+		if err != nil {
+			return err
+		}
+	}
+
 	form, err := db.Prepare("DELETE FROM session WHERE module_id = ?")
 	if err != nil {
 		return err

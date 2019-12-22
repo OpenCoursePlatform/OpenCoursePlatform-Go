@@ -272,7 +272,52 @@ func DeleteCourseInDB(db *sql.DB, slug string) error {
 		moduleIDS = append(moduleIDS, moduleID)
 	}
 	for index := range moduleIDS {
-		form, err := db.Prepare("DELETE FROM session WHERE module_id = ?")
+		rows, err := db.Query(`
+		SELECT id
+		FROM session
+		WHERE module_id = ?`, moduleIDS[index])
+		if err != nil {
+			return err
+		}
+		defer rows.Close()
+
+		var sessionIDS []int
+		for rows.Next() {
+			var sessionID int
+			err = rows.Scan(&sessionID)
+			if err != nil {
+				return err
+			}
+			sessionIDS = append(sessionIDS, sessionID)
+		}
+		err = rows.Err()
+		if err != nil {
+			return err
+		}
+
+		for sessionIndex := range sessionIDS {
+			form, err := db.Prepare("DELETE FROM session_text WHERE session_id = ?")
+			if err != nil {
+				return err
+			}
+			_, err = form.Exec(sessionIDS[sessionIndex])
+			if err != nil {
+				return err
+			}
+			form, err = db.Prepare("DELETE FROM session_youtube WHERE session_id = ?")
+			if err != nil {
+				return err
+			}
+			_, err = form.Exec(sessionIDS[sessionIndex])
+			if err != nil {
+				return err
+			}
+			err = DeleteQuestions(db, sessionIDS[sessionIndex])
+			if err != nil {
+				return err
+			}
+		}
+		form, err := db.Prepare("DELETE FROM module WHERE id = ?")
 		if err != nil {
 			return err
 		}
@@ -280,7 +325,8 @@ func DeleteCourseInDB(db *sql.DB, slug string) error {
 		if err != nil {
 			return err
 		}
-		form, err = db.Prepare("DELETE FROM module WHERE id = ?")
+
+		form, err = db.Prepare("DELETE FROM session WHERE module_id = ?")
 		if err != nil {
 			return err
 		}

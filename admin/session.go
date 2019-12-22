@@ -467,3 +467,56 @@ func InsertNewSession(w http.ResponseWriter, r *http.Request) {
 	}
 	http.Redirect(w, r, "/admin/courses/"+course+"/"+module+"/"+sessionSlug, http.StatusSeeOther)
 }
+
+// DeleteSessionInDB ...
+func DeleteSessionInDB(db *sql.DB, slug string) error {
+	var sessionID int
+	err := db.QueryRow(`SELECT id FROM session WHERE slug = ?`, slug).Scan(&sessionID)
+	if err != nil {
+		return err
+	}
+
+	form, err := db.Prepare("DELETE FROM session_text WHERE session_id = ?")
+	if err != nil {
+		return err
+	}
+	_, err = form.Exec(sessionID)
+	if err != nil {
+		return err
+	}
+	form, err = db.Prepare("DELETE FROM session_youtube WHERE session_id = ?")
+	if err != nil {
+		return err
+	}
+	_, err = form.Exec(sessionID)
+	if err != nil {
+		return err
+	}
+	err = DeleteQuestions(db, sessionID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteSession ...
+func DeleteSession(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	slug := vars["session"]
+	moduleSlug := vars["module"]
+	courseSlug := vars["course"]
+
+	db, err := helpers.CreateDBHandler()
+	if err != nil {
+		helpers.HandleError(err)
+	}
+
+	defer db.Close()
+
+	err = DeleteSessionInDB(db, slug)
+	if err != nil {
+		helpers.HandleError(err)
+	}
+
+	http.Redirect(w, r, "/admin/courses/"+courseSlug+"/"+moduleSlug, http.StatusSeeOther)
+}
