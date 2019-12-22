@@ -71,11 +71,13 @@ func Make() *http.Server {
 	router.HandleFunc("/admin/courses/new", middleware.Chain(admin.InsertNewCourse, middleware.Logging(), middleware.ConfigFileExists(), middleware.AdminPage())).Methods("POST")
 	router.HandleFunc("/admin/courses/{course}", middleware.Chain(admin.Course, middleware.Logging(), middleware.ConfigFileExists(), middleware.AdminPage())).Methods("GET")
 	router.HandleFunc("/admin/courses/{course}", middleware.Chain(admin.UpdateCourse, middleware.Logging(), middleware.ConfigFileExists(), middleware.AdminPage())).Methods("POST")
+	router.HandleFunc("/admin/courses/{course}/delete", middleware.Chain(admin.DeleteCourse, middleware.Logging(), middleware.ConfigFileExists(), middleware.AdminPage())).Methods("POST")
 
 	router.HandleFunc("/admin/courses/{course}/new", middleware.Chain(admin.NewModule, middleware.Logging(), middleware.ConfigFileExists(), middleware.AdminPage())).Methods("GET")
 	router.HandleFunc("/admin/courses/{course}/new", middleware.Chain(admin.InsertNewModule, middleware.Logging(), middleware.ConfigFileExists(), middleware.AdminPage())).Methods("POST")
 	router.HandleFunc("/admin/courses/{course}/{module}", middleware.Chain(admin.Module, middleware.Logging(), middleware.ConfigFileExists(), middleware.AdminPage())).Methods("GET")
 	router.HandleFunc("/admin/courses/{course}/{module}", middleware.Chain(admin.UpdateModule, middleware.Logging(), middleware.ConfigFileExists(), middleware.AdminPage())).Methods("POST")
+	router.HandleFunc("/admin/courses/{course}/{module}/delete", middleware.Chain(admin.DeleteModule, middleware.Logging(), middleware.ConfigFileExists(), middleware.AdminPage())).Methods("POST")
 
 	router.HandleFunc("/admin/courses/{course}/{module}/new", middleware.Chain(admin.NewSession, middleware.Logging(), middleware.ConfigFileExists(), middleware.AdminPage())).Methods("GET")
 	router.HandleFunc("/admin/courses/{course}/{module}/new", middleware.Chain(admin.InsertNewSession, middleware.Logging(), middleware.ConfigFileExists(), middleware.AdminPage())).Methods("POST")

@@ -249,3 +249,72 @@ func InsertNewCourse(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, "/admin/courses/"+slug, http.StatusSeeOther)
 }
+
+// DeleteCourseInDB ...
+func DeleteCourseInDB(db *sql.DB, slug string) error {
+	var courseID int
+	err := db.QueryRow(`SELECT id FROM courses WHERE slug = ?`, slug).Scan(&courseID)
+	if err != nil {
+		return err
+	}
+	rows, err := db.Query(`SELECT id FROM module WHERE course_id = ?`, courseID) // check err
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+	var moduleIDS []int
+	for rows.Next() {
+		var moduleID int
+		err = rows.Scan(&moduleID) // check err
+		if err != nil {
+			return err
+		}
+		moduleIDS = append(moduleIDS, moduleID)
+	}
+	for index := range moduleIDS {
+		form, err := db.Prepare("DELETE FROM session WHERE module_id = ?")
+		if err != nil {
+			return err
+		}
+		_, err = form.Exec(moduleIDS[index])
+		if err != nil {
+			return err
+		}
+		form, err = db.Prepare("DELETE FROM module WHERE id = ?")
+		if err != nil {
+			return err
+		}
+		_, err = form.Exec(moduleIDS[index])
+		if err != nil {
+			return err
+		}
+	}
+	form, err := db.Prepare("DELETE FROM courses WHERE id = ?")
+	if err != nil {
+		return err
+	}
+	_, err = form.Exec(courseID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteCourse ...
+func DeleteCourse(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	slug := vars["course"]
+	db, err := helpers.CreateDBHandler()
+	if err != nil {
+		helpers.HandleError(err)
+	}
+
+	defer db.Close()
+
+	err = DeleteCourseInDB(db, slug)
+	if err != nil {
+		helpers.HandleError(err)
+	}
+
+	http.Redirect(w, r, "/admin/courses", http.StatusSeeOther)
+}

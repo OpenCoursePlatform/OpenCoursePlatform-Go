@@ -261,3 +261,51 @@ func InsertNewModule(w http.ResponseWriter, r *http.Request) {
 	}
 	http.Redirect(w, r, "/admin/courses/"+course+"/"+module, http.StatusSeeOther)
 }
+
+// DeleteModuleInDB ...
+func DeleteModuleInDB(db *sql.DB, slug string) error {
+	var moduleID int
+	err := db.QueryRow(`SELECT id FROM module WHERE slug = ?`, slug).Scan(&moduleID)
+	if err != nil {
+		return err
+	}
+
+	form, err := db.Prepare("DELETE FROM session WHERE module_id = ?")
+	if err != nil {
+		return err
+	}
+	_, err = form.Exec(moduleID)
+	if err != nil {
+		return err
+	}
+	form, err = db.Prepare("DELETE FROM module WHERE id = ?")
+	if err != nil {
+		return err
+	}
+	_, err = form.Exec(moduleID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteModule ...
+func DeleteModule(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	slug := vars["module"]
+	courseSlug := vars["course"]
+
+	db, err := helpers.CreateDBHandler()
+	if err != nil {
+		helpers.HandleError(err)
+	}
+
+	defer db.Close()
+
+	err = DeleteModuleInDB(db, slug)
+	if err != nil {
+		helpers.HandleError(err)
+	}
+
+	http.Redirect(w, r, "/admin/courses/"+courseSlug, http.StatusSeeOther)
+}

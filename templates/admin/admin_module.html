@@ -69,11 +69,11 @@
                                             </button>
                                         </div>
                                     </form>
-                                    <div class="text-center mt-4">
-                                        <a class="no-underline hover:underline text-blue-dark text-xs" href="/sign/in">
-                                        Delete module
-                                    </a>
-                                    </div>
+                                    <form method="POST" action="/admin/courses/{{ $CourseSlug }}/{{ $ModuleSlug }}/delete" class="text-center mt-4">
+                                        <button class="no-underline hover:underline text-blue-dark text-xs" type="submit">
+                                            Delete module
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
