@@ -37,8 +37,13 @@ type ModulePageData struct {
 /*
 GetModules gets all of the modules from the database.
 */
-func GetModules(db *sql.DB) ([]Module, error) {
-	rows, err := db.Query(`SELECT name, image_link, slug FROM module`)
+func GetModules(db *sql.DB, slug string) ([]Module, error) {
+	rows, err := db.Query(`
+	SELECT module.name, module.image_link, module.slug
+	FROM module
+	INNER JOIN courses
+		ON module.course_id = courses.id
+	WHERE courses.slug = ?`, slug)
 	if err != nil {
 		return nil, err
 	}
@@ -81,14 +86,17 @@ func GetModule(db *sql.DB, slug string) (Module, error) {
 GetSessionsByModuleSlug gets all of the sessions related
 to a module by the module slug from the database.
 */
-func GetSessionsByModuleSlug(db *sql.DB, slug string) ([]Session, error) {
+func GetSessionsByModuleSlug(db *sql.DB, moduleSlug, courseSlug string) ([]Session, error) {
 	rows, err := db.Query(`
 		SELECT session.name, session.slug
 		FROM session
 		JOIN module
-		ON session.module_id = module.id
+			ON session.module_id = module.id
+		JOIN courses
+			ON module.course_id = courses.id
 		WHERE module.slug = ?
-	`, slug) // check err
+		AND courses.slug = ?
+	`, moduleSlug, courseSlug) // check err
 	if err != nil {
 		return nil, err
 	}
@@ -140,13 +148,13 @@ func ModulePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	modules, err := GetModules(db)
+	modules, err := GetModules(db, courseSlug)
 	if err != nil {
 		helpers.HandleError(err)
 		http.NotFound(w, r)
 		return
 	}
-	sessions, err := GetSessionsByModuleSlug(db, slug)
+	sessions, err := GetSessionsByModuleSlug(db, slug, courseSlug)
 	if err != nil {
 		helpers.HandleError(err)
 		http.NotFound(w, r)
