@@ -19,6 +19,16 @@ func TestGetModules(t *testing.T) {
 	}
 
 	_, err = db.Exec(`
+	INSERT INTO courses (id, name, description, slug, category_id)
+	VALUES
+		(1, 'Introduction to Programming', 'Introduction to Programming', 'introduction-to-programming', 1);
+	`)
+	if err != nil {
+		t.Errorf("Insertion of courses in database failed. Error message: %s", err.Error())
+		return
+	}
+
+	_, err = db.Exec(`
 	INSERT INTO module (id, name, description, image_link, slug, course_id)
 	VALUES
 		(1, 'Getting started with Python', 'Getting started with Python', 'link', 'getting-started-with-python', 1),
@@ -29,7 +39,7 @@ func TestGetModules(t *testing.T) {
 		return
 	}
 
-	modules, err := GetModules(db)
+	modules, err := GetModules(db, "introduction-to-programming")
 	if err != nil {
 		t.Errorf("GetModules failed. Error message: %s", err.Error())
 		return
@@ -64,6 +74,16 @@ func TestGetSessionsByModuleSlug(t *testing.T) {
 	}
 
 	_, err = db.Exec(`
+	INSERT INTO courses (id, name, description, slug, category_id)
+	VALUES
+		(1, 'Introduction to Programming', 'Introduction to Programming', 'introduction-to-programming', 1);
+	`)
+	if err != nil {
+		t.Errorf("Insertion of courses in database failed. Error message: %s", err.Error())
+		return
+	}
+
+	_, err = db.Exec(`
 	INSERT INTO module (id, name, description, image_link, slug, course_id)
 	VALUES
 		(1, 'Getting started with Python', 'Getting started with Python', 'link', 'getting-started-with-python', 1);
@@ -83,7 +103,7 @@ func TestGetSessionsByModuleSlug(t *testing.T) {
 		return
 	}
 
-	sessions, err := GetSessionsByModuleSlug(db, "getting-started-with-python")
+	sessions, err := GetSessionsByModuleSlug(db, "getting-started-with-python", "introduction-to-programming")
 	if err != nil {
 		t.Errorf("GetSessionsByModuleSlug failed. Error message: %s", err.Error())
 		return

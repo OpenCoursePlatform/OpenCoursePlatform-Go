@@ -167,7 +167,7 @@ func ModulePage(w http.ResponseWriter, r *http.Request) {
 		Module:     module,
 		Modules:    modules,
 		Sessions:   sessions,
-		Paths:      []helpers.Path{{Name: "Courses", Link: "/courses"}, {Name: course.Name, Link: "/courses/" + course.Slug}},
+		Paths:      []helpers.Path{{Name: "Courses", Link: "/"}, {Name: course.Name, Link: "/courses/" + course.Slug}},
 	}
 
 	helpers.RenderTemplate(r, w, "module", coursePage)

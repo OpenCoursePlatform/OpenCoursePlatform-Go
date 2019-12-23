@@ -276,7 +276,7 @@ func SessionPage(w http.ResponseWriter, r *http.Request) {
 	if session.SessionType == 1 {
 		coursePage := TextData{
 			Title:    session.Name,
-			Paths:    []helpers.Path{{Name: "Courses", Link: "/courses"}, {Name: course.Name, Link: "/courses/" + course.Slug}, {Name: module.Name, Link: "/courses/" + course.Slug + "/" + module.Slug}},
+			Paths:    []helpers.Path{{Name: "Courses", Link: "/"}, {Name: course.Name, Link: "/courses/" + course.Slug}, {Name: module.Name, Link: "/courses/" + course.Slug + "/" + module.Slug}},
 			Course:   course,
 			Module:   module,
 			Session:  session,
@@ -294,7 +294,7 @@ func SessionPage(w http.ResponseWriter, r *http.Request) {
 	} else if session.SessionType == 2 {
 		coursePage := YoutubeData{
 			Title:    session.Name,
-			Paths:    []helpers.Path{{Name: "Courses", Link: "/courses"}, {Name: course.Name, Link: "/courses/" + course.Slug}, {Name: module.Name, Link: "/courses/" + course.Slug + "/" + module.Slug}},
+			Paths:    []helpers.Path{{Name: "Courses", Link: "/"}, {Name: course.Name, Link: "/courses/" + course.Slug}, {Name: module.Name, Link: "/courses/" + course.Slug + "/" + module.Slug}},
 			Course:   course,
 			Module:   module,
 			Session:  session,
@@ -320,7 +320,7 @@ func SessionPage(w http.ResponseWriter, r *http.Request) {
 
 		coursePage := MultipleChoiceData{
 			Title:     session.Name,
-			Paths:     []helpers.Path{{Name: "Courses", Link: "/courses"}, {Name: course.Name, Link: "/courses/" + course.Slug}, {Name: module.Name, Link: "/courses/" + course.Slug + "/" + module.Slug}},
+			Paths:     []helpers.Path{{Name: "Courses", Link: "/"}, {Name: course.Name, Link: "/courses/" + course.Slug}, {Name: module.Name, Link: "/courses/" + course.Slug + "/" + module.Slug}},
 			Course:    course,
 			Module:    module,
 			Session:   session,
