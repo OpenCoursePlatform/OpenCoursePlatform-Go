@@ -247,7 +247,7 @@ func TestGetPasswordHashFromUsername(t *testing.T) {
 	_, err = db.Exec(`
 	INSERT INTO users (id, username, email, password, verified, created_at)
 	VALUES
-		(1, 'johndoe', 'johndoe@gmail.com', '1aTev2Ej6g5MFLYQPXLYJ1T6', 0, '2019-11-11 10:11:18');		
+		(1, 'johndoe', 'johndoe@gmail.com', '1aTev2Ej6g5MFLYQPXLYJ1T6', 1, '2019-11-11 10:11:18');		
 	`)
 	if err != nil {
 		t.Errorf("Insertion of session in database failed. Error message: %s", err.Error())
