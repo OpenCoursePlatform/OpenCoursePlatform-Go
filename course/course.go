@@ -80,7 +80,7 @@ associated with a course by the slug of the course.
 */
 func GetModulesByCourseSlug(db *sql.DB, slug string) ([]Module, error) {
 	rows, err := db.Query(`
-		SELECT module.name, module.description, module.slug
+		SELECT module.name, module.description, module.image_link, module.slug
 		FROM module
 		JOIN courses
 		ON module.course_id = courses.id
@@ -94,7 +94,7 @@ func GetModulesByCourseSlug(db *sql.DB, slug string) ([]Module, error) {
 	var modules []Module
 	for rows.Next() {
 		var module Module
-		err = rows.Scan(&module.Name, &module.Description, &module.Slug) // check err
+		err = rows.Scan(&module.Name, &module.Description, &module.ImageLink, &module.Slug) // check err
 		if err != nil {
 			return modules, err
 		}

@@ -276,6 +276,7 @@ func CreateModule(db *sql.DB) error {
 		id int(11) NOT NULL AUTO_INCREMENT,
 		name text NOT NULL,
 		description text NOT NULL,
+		image_link varchar(255) NOT NULL,
 		slug varchar(255) NOT NULL,
 		course_id int(11) NOT NULL,
 		created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,

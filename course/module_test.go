@@ -19,10 +19,10 @@ func TestGetModules(t *testing.T) {
 	}
 
 	_, err = db.Exec(`
-	INSERT INTO module (id, name, description, slug, course_id)
+	INSERT INTO module (id, name, description, image_link, slug, course_id)
 	VALUES
-		(1, 'Getting started with Python', 'Getting started with Python', 'getting-started-with-python', 1),
-		(2, 'Python Data Structures', 'Python Data Structures', 'python-data-structures', 1);
+		(1, 'Getting started with Python', 'Getting started with Python', 'link', 'getting-started-with-python', 1),
+		(2, 'Python Data Structures', 'Python Data Structures', 'link', 'python-data-structures', 1);
 	`)
 	if err != nil {
 		t.Errorf("Insertion of module in database failed. Error message: %s", err.Error())
@@ -35,8 +35,8 @@ func TestGetModules(t *testing.T) {
 		return
 	}
 	sampleModules := []Module{
-		{"Getting started with Python", "", "getting-started-with-python"},
-		{"Python Data Structures", "", "python-data-structures"},
+		{"Getting started with Python", "", "link", "getting-started-with-python"},
+		{"Python Data Structures", "", "link", "python-data-structures"},
 	}
 
 	if sampleModules[0] != modules[0] {

@@ -15,6 +15,7 @@ module data for rendering.
 type Module struct {
 	Name        string
 	Description string
+	ImageLink   string
 	Slug        string
 }
 
@@ -37,7 +38,7 @@ type ModulePageData struct {
 GetModules gets all of the modules from the database.
 */
 func GetModules(db *sql.DB) ([]Module, error) {
-	rows, err := db.Query(`SELECT module.name, module.slug FROM module`)
+	rows, err := db.Query(`SELECT name, image_link, slug FROM module`)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +47,7 @@ func GetModules(db *sql.DB) ([]Module, error) {
 	var modules []Module
 	for rows.Next() {
 		var module Module
-		err = rows.Scan(&module.Name, &module.Slug)
+		err = rows.Scan(&module.Name, &module.ImageLink, &module.Slug)
 		if err != nil {
 			return modules, err
 		}
@@ -65,10 +66,10 @@ GetModule gets the current module from the database.
 func GetModule(db *sql.DB, slug string) (Module, error) {
 	var module Module
 	err := db.QueryRow(`
-		SELECT name, slug
+		SELECT name, image_link, slug
 		FROM module
 		WHERE slug = ?
-	`, slug).Scan(&module.Name, &module.Slug) // check err
+	`, slug).Scan(&module.Name, &module.ImageLink, &module.Slug) // check err
 	if err != nil {
 		return module, err
 	}
