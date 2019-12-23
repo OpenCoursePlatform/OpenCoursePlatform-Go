@@ -30,6 +30,7 @@ func Make() *http.Server {
 	router.HandleFunc("/sign/out", middleware.Chain(authentication.SignOut, middleware.Logging(), middleware.ConfigFileExists())).Methods("GET")
 	router.HandleFunc("/sign/up", middleware.Chain(authentication.SignUp, middleware.Logging(), middleware.ConfigFileExists())).Methods("GET")
 	router.HandleFunc("/sign/up", middleware.Chain(authentication.SignUpNewUser, middleware.Logging(), middleware.ConfigFileExists())).Methods("POST")
+	router.HandleFunc("/activate/{token}", middleware.Chain(authentication.ActivateAccount, middleware.Logging(), middleware.ConfigFileExists())).Methods("GET")
 
 	router.HandleFunc("/settings", middleware.Chain(settings.UserPage, middleware.Logging(), middleware.ConfigFileExists())).Methods("GET")
 	router.HandleFunc("/settings/email", middleware.Chain(settings.EmailPage, middleware.Logging(), middleware.ConfigFileExists())).Methods("GET")

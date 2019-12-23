@@ -9,6 +9,7 @@ import (
 	"text/template"
 
 	"github.com/OpenCoursePlatform/OpenCoursePlatform-Go/helpers"
+	"github.com/gorilla/mux"
 	"github.com/mattevans/postmark-go"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -52,10 +53,17 @@ from the database associated with the username sent in.
 */
 func GetPasswordHashFromUsername(db *sql.DB, username string) (string, error) {
 	var passwordHash string
-	query := `SELECT password FROM users WHERE username = ?`
-	err := db.QueryRow(query, username).Scan(&passwordHash)
+	var verified bool
+	query := `SELECT password, verified FROM users WHERE username = ?`
+	err := db.QueryRow(query, username).Scan(&passwordHash, &verified)
 	if err != nil {
 		return passwordHash, err
+	}
+	if len(passwordHash) == 0 {
+		return passwordHash, errors.New("User does not exists")
+	}
+	if !verified {
+		return passwordHash, errors.New("User is not verified")
 	}
 	return passwordHash, nil
 }
@@ -246,6 +254,7 @@ func SignUpNewUser(w http.ResponseWriter, r *http.Request) {
 	email := r.FormValue("email")
 	if !EmailIsValid(email) {
 		helpers.HandleError(errors.New("Email is not valid"))
+		return
 	}
 
 	password := r.FormValue("password")
@@ -352,4 +361,49 @@ func GetUserIDFromUsername(db *sql.DB, username string) (int, error) {
 		return 0, err
 	}
 	return userID, nil
+}
+
+// ActivateTokenInDB ...
+func ActivateTokenInDB(db *sql.DB, token string) error {
+	res, err := db.Exec(`UPDATE email_verification SET verified_at = CURRENT_TIMESTAMP WHERE token = ? AND verified_at is NULL`, token)
+	if err != nil {
+		return err
+	}
+	rowsAffected, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rowsAffected < 1 {
+		return errors.New("ID doesn't exist")
+	}
+	var userID int
+	err = db.QueryRow("SELECT user_id FROM email_verification WHERE token = ?", token).Scan(&userID)
+	if err != nil {
+		return err
+	}
+	_, err = db.Exec(`UPDATE users SET verified = 1 WHERE id = ?`, userID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+/*
+ActivateAccount gets the userID from database
+that matches the username variable sent in.
+*/
+func ActivateAccount(w http.ResponseWriter, r *http.Request) {
+	token := mux.Vars(r)["token"]
+	db, err := helpers.CreateDBHandler()
+	if err != nil {
+		helpers.HandleError(err)
+		helpers.InternalServerError(w)
+		return
+	}
+	defer db.Close()
+	err = ActivateTokenInDB(db, token)
+	if err != nil {
+		helpers.HandleError(err)
+	}
+	http.Redirect(w, r, "/sign/in", http.StatusSeeOther)
 }

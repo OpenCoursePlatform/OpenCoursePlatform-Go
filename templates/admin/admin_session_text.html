@@ -19,7 +19,7 @@
                         <div class="flex flex-col flex-1 justify-center mb-8">
                             <h1 class="text-4xl text-center font-thin">Update Session</h1>
                             <div class="w-full mt-4">
-                                <form class="form-horizontal w-full mx-auto" method="POST">
+                                <form class="form-horizontal w-full mx-auto" method="POST" id="form">
                                     <div class="flex flex-col mt-4">
                                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="name">
                                             Name
@@ -30,7 +30,7 @@
                                         <div id="text"></div>
                                     </div>
                                     <div class="flex flex-col mt-8">
-                                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white text-sm font-semibold py-2 px-4 rounded">
+                                        <button id="submitForm" class="bg-blue-500 hover:bg-blue-700 text-white text-sm font-semibold py-2 px-4 rounded">
                                             Update session text
                                         </button>
                                     </div>
@@ -47,5 +47,18 @@
 
 <script>
     var editor = new tui.Editor({el: document.querySelector('#text'), previewStyle: 'vertical', height: '300px', initialEditType: 'wysiwyg', initialValue: "{{ .Text }}"});
+    document
+        .getElementById('submitForm')
+        .addEventListener('click', (e) => {
+            e.preventDefault();
+            var elInput = document.createElement('input');
+            elInput.setAttribute('type', 'hidden');
+            elInput.setAttribute('name', 'text');
+            elInput.setAttribute('value', editor.getMarkdown());
+            document
+                .getElementById('form')
+                .appendChild(elInput);
+            document.getElementById('form').submit();
+        });
 </script>
 {{ template "footer.html" . }}
