@@ -64,9 +64,9 @@ func TestGetSessionsByModuleSlug(t *testing.T) {
 	}
 
 	_, err = db.Exec(`
-	INSERT INTO module (id, name, description, slug, course_id)
+	INSERT INTO module (id, name, description, image_link, slug, course_id)
 	VALUES
-		(1, 'Getting started with Python', 'Getting started with Python', 'getting-started-with-python', 1);
+		(1, 'Getting started with Python', 'Getting started with Python', 'link', 'getting-started-with-python', 1);
 
 		`)
 	if err != nil {
